@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiSnap - The Ultimate E-commerce Image Processor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --surface: #111111;
+            --surface-hover: #1a1a1a;
+            --border: #333;
+            --primary: #8b5cf6;
+            --primary-glow: rgba(139, 92, 246, 0.5);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #fff 20%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Nav */
+        nav {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            top: 0;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 6px;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 160px 0 100px;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+            color: #d8b4fe;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-btn {
+            background: var(--primary);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px var(--primary-glow);
+        }
+
+        /* UI Preview */
+        .preview-container {
+            margin-top: 60px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #111;
+            padding: 10px;
+            box-shadow: 0 20px 100px rgba(0, 0, 0, 0.5);
+        }
+
+        .preview-img {
+            width: 100%;
+            border-radius: 12px;
+            display: block;
+        }
+
+        /* Bento Grid */
+        .features {
+            padding: 100px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .grid-item {
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 32px;
+            border-radius: 16px;
+            transition: transform 0.2s;
+        }
+
+        .grid-item:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .grid-item.wide {
+            grid-column: span 2;
+        }
+
+        .grid-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .grid-item p {
+            color: var(--text-muted);
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Presets Section */
+        .presets {
+            padding: 100px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .preset-list {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .preset-tag {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px 24px;
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .preset-tag.highlight {
+            border-color: var(--primary);
+            color: white;
+            background: rgba(139, 92, 246, 0.1);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-item.wide {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">
+                <div class="logo-icon"></div> OptiSnap
+            </div>
+            <a href="install.html"
+                style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">Installation & Docs</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container">
+            <span class="badge">🔥 New on AppSumo</span>
+            <h1>Prepare 1,000 Products <br> <span class="text-gradient">In Minutes.</span></h1>
+            <p style="color: #fff; font-weight: 500; font-size: 1.1rem; margin-bottom: 16px;">
+                No uploads. No subscriptions. No limits. 100% offline processing.
+            </p>
+            <p>The enterprise-grade bulk image processor for Shopify, Amazon, and WooCommerce sellers. Resize,
+                watermark, and optimize endlessly without uploading a single file.</p>
+            <a href="#" class="cta-btn">Get Lifetime Access</a>
+
+            <div
+                style="margin-top: 24px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #a1a1aa; font-size: 0.9rem;">
+                <span style="color: #34d399;">🛡️</span> Verified Safe: 0/70 Detections (VirusTotal)
+                <a href="install.html" style="color: #a1a1aa; text-decoration: underline;">See Proof</a>
+            </div>
+
+            <div class="preview-container">
+                <!-- Replace with actual screenshot of OptiSnap UI -->
+                <div
+                    style="aspect-ratio: 16/9; background: #1a1a1a; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #333; font-weight: bold; font-size: 2rem;">
+                    [App Interface Screenshot Placeholder]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="presets">
+        <div class="container">
+            <div class="text-center">
+                <h2>Built for your platform</h2>
+                <p style="color: var(--text-muted); margin-top: 16px;">One-click presets ensure your images meet every
+                    marketplace guideline.</p>
+            </div>
+            <div class="preset-list">
+                <div class="preset-tag highlight">Shopify (2048x2048)</div>
+                <div class="preset-tag">Amazon Zoom (1600px)</div>
+                <div class="preset-tag">Etsy Listing (3000px)</div>
+                <div class="preset-tag">WooCommerce Catalog</div>
+                <div class="preset-tag">TikTok Ads</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="replace-tools" style="padding: 60px 0 20px; border-bottom: 1px solid var(--border);">
+        <div class="container text-center">
+            <h2 style="margin-bottom: 40px; font-size: 2rem;">Replace These Tools Instantly</h2>
+            <div style="display: flex; gap: 40px; justify-content: center; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5;">📉</span>
+                    <h4 style="color: var(--text-muted);">Online Compressors</h4>
+                </div>
+                <div style="text-align: center;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5;">🖼️</span>
+                    <h4 style="color: var(--text-muted);">Watermark Apps</h4>
+                </div>
+                <div style="text-align: center;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5;">📝</span>
+                    <h4 style="color: var(--text-muted);">Bulk Renamers</h4>
+                </div>
+                <div style="text-align: center;">
+                    <span style="font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5;">☁️</span>
+                    <h4 style="color: var(--text-muted);">Cloud Uploads</h4>
+                </div>
+            </div>
+            <p style="margin-top: 40px; color: var(--text-muted);">OptiSnap does it all offline, faster, and cheaper.
+            </p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="grid">
+                <div class="grid-item wide">
+                    <span class="icon">⚡</span>
+                    <h3>Bulk Engine</h3>
+                    <p>Process 5,000+ images in a single batch. OptiSnap uses your machine's full <strong>Multi-core
+                            CPU</strong> power to resize,
+                        convert, and rename files instantly. No server queues. No timeouts.</p>
+                </div>
+                <div class="grid-item">
+                    <span class="icon">🔒</span>
+                    <h3>Privacy First</h3>
+                    <p>Images never leave your machine. No cloud uploads. No tracking. Safe for strict client NDAs.</p>
+                </div>
+                <div class="grid-item">
+                    <span class="icon">🛡️</span>
+                    <h3>Smart Watermarking</h3>
+                    <p>Protect your brand assets. Apply logos or text patterns to thousands of images with adjustable
+                        opacity and positioning.</p>
+                </div>
+                <div class="grid-item wide">
+                    <span class="icon">🪄</span>
+                    <h3>Format Wizard</h3>
+                    <p>Convert heavy PNGs to optimized WebP or JPG automatically. Reduce page load times and boost SEO
+                        scores without losing visual quality.</p>
+                </div>
+                <div class="grid-item">
+                    <span class="icon">📂</span>
+                    <h3>Smart Rename</h3>
+                    <p>Clean up messy filenames (DSC_001.jpg) to SEO-friendly slugs (nike-air-max-black.jpg) using
+                        sequential numbering.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison" style="padding: 100px 0; background: #0a0a0a;">
+        <div class="container">
+            <h2 class="text-center">Stop paying monthly for basic tools.</h2>
+            <p class="text-center" style="color: var(--text-muted); margin-top: 10px; margin-bottom: 40px;">
+                Most tools charge monthly for features you only need occasionally.
+            </p>
+            <div
+                style="overflow-x: auto; margin-top: 10px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="background: rgba(255,255,255,0.03);">
+                            <th style="padding: 24px; color: #fff;">Feature</th>
+                            <th style="padding: 24px; color: #a78bfa;">OptiSnap (Lifetime)</th>
+                            <th style="padding: 24px; color: #71717a;">Online Converters (SaaS)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 24px; color: #d4d4d8; font-weight: 500;">Pricing</td>
+                            <td style="padding: 24px; color: #fff;"><strong>One-time Payment</strong></td>
+                            <td style="padding: 24px; color: #71717a;">$29/month forever</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 24px; color: #d4d4d8; font-weight: 500;">Speed</td>
+                            <td style="padding: 24px; color: #fff;"><strong>Instant (Local CPU)</strong></td>
+                            <td style="padding: 24px; color: #71717a;">Slow Cloud Uploads</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 24px; color: #d4d4d8; font-weight: 500;">Privacy</td>
+                            <td style="padding: 24px; color: #fff;"><strong>100% Offline</strong></td>
+                            <td style="padding: 24px; color: #71717a;">Files stored on their servers</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 24px; color: #d4d4d8; font-weight: 500;">Limits</td>
+                            <td style="padding: 24px; color: #fff;"><strong>Unlimited Batch Size</strong></td>
+                            <td style="padding: 24px; color: #71717a;">Max 50 images per batch</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" style="padding: 80px 0;">
+        <div class="container" style="max-width: 800px;">
+            <h2 class="text-center" style="margin-bottom: 50px;">Frequently Asked Questions</h2>
+
+            <div style="margin-bottom: 30px;">
+                <h4 style="color: #fff; margin-bottom: 10px;">Does this work on Mac and Windows?</h4>
+                <p style="color: var(--text-muted);">Yes! OptiSnap is a native application built for both Windows 10/11
+                    and macOS (Intel & M1/M2 silicon).</p>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h4 style="color: #fff; margin-bottom: 10px;">Are my images uploaded to the cloud?</h4>
+                <p style="color: var(--text-muted);">Never. OptiSnap processes files directly on your computer. This
+                    makes it faster and compliant with strict NDA/Privacy requirements.</p>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h4 style="color: #fff; margin-bottom: 10px;">Do I need to pay monthly?</h4>
+                <p style="color: var(--text-muted);">No. This AppSumo deal grants you a Lifetime License with all future
+                    updates included for free.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta"
+        style="padding: 100px 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(139, 92, 246, 0.1) 100%); text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Ready to automate your workflow?</h2>
+            <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 40px; margin-top: 30px;">
+                <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
+                    <span style="color: var(--primary);">✓</span> 30-Day Money Back
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
+                    <span style="color: var(--primary);">✓</span> Instant Download
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
+                    <span style="color: var(--primary);">✓</span> Email Support
+                </div>
+            </div>
+            <a href="#" class="cta-btn" style="padding: 20px 60px; font-size: 1.2rem;">Get OptiSnap Lifetime Deal</a>
+        </div>
+    </section>
+
+</body>
+
+</html>

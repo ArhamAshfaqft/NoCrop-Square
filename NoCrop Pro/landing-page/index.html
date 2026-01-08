@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus License Manager - Self-Hosted Licensing for Electron</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-glow: #3b82f6;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Utils */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+        }
+
+        /* Hero */
+        header {
+            padding: 100px 0 60px;
+            text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 70%);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-sub {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 80px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 span {
+            font-size: 1.8rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Direct Comparison */
+        .comparison {
+            padding: 80px 0;
+            background: #0b1120;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            margin-top: 50px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background: #1e293b;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        td {
+            color: var(--text-muted);
+        }
+
+        .check {
+            color: var(--accent);
+        }
+
+        .cross {
+            color: #f43f5e;
+        }
+
+        /* Code Section */
+        .code-section {
+            padding: 80px 0;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            padding: 25px;
+            border-radius: 12px;
+            font-family: 'Consolas', monospace;
+            color: #d4d4d4;
+            overflow-x: auto;
+            border: 1px solid #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+        }
+
+        footer {
+            padding: 50px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-muted);
+        }
+
+        /* Killer Badge */
+        .badge {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <span class="badge">Version 1.0 Release</span>
+            <h1>Stop Renting Your <br><span class="text-gradient">Licensing System.</span></h1>
+            <p class="hero-sub">Nexus Manager is the self-hosted, simplified licensing server for Electron apps. Zero
+                commissions. Unlimited products. 100% Data Ownership.</p>
+            <a href="#" class="btn">Get Nexus Manager</a>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="text-center">Why Developers Choose Nexus</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3><span>🏢</span> AppSumo Ready</h3>
+                    <p>Designed for growth. Powerful <strong>Batch Generator</strong> creates thousands of keys in
+                        seconds. Supports <strong>Tiered Licensing</strong> (e.g. 1-Site vs 5-Site Plans) with automatic
+                        CSV export formatted for AppSumo.</p>
+                </div>
+                <div class="card">
+                    <h3><span>🔒</span> Hardware Locking</h3>
+                    <p>Prevent unauthorized sharing. Nexus automatically binds licenses to the user's <strong>Hardware
+                            ID</strong> upon activation. Features one-click <strong>Remote Revoke</strong> to instantly
+                        kill access on bad actors.</p>
+                </div>
+                <div class="card">
+                    <h3><span>⚡</span> Instant Integration</h3>
+                    <p>Forget complex SDKs. With our <strong>"Get Code"</strong> feature, copy-paste a pre-configured JS
+                        snippet directly into your Electron app. Up and running in < 5 minutes.</p>
+                </div>
+                <div class="card">
+                    <h3><span>🔄</span> Auto-Update Engine</h3>
+                    <p>Ship updates confidently. Nexus handles version checking and delivers secure download URLs to
+                        your users when a new version is detected.</p>
+                </div>
+                <div class="card">
+                    <h3><span>🎛️</span> Advanced Dashboard</h3>
+                    <p>Filter by <strong>Product</strong>, Search by Email/Key, and view licenses by status (Claimed,
+                        Unclaimed, Revoked). Includes <strong>Bulk Actions</strong> for mass management.</p>
+                </div>
+                <div class="card">
+                    <h3><span>💸</span> Zero Fees</h3>
+                    <p>Competitors charge 20-30% per sale or $99/mo. Nexus runs on your existing WordPress site.
+                        <strong>You keep 100% of your revenue.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="comparison">
+        <div class="container">
+            <h2 class="text-center">The "No-Brainer" Comparison</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Nexus Manager</th>
+                            <th>Freemius / Others</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cost</strong></td>
+                            <td><span class="check">$0 / month</span> (Self-Hosted)</td>
+                            <td>$99/mo or 20-30% Rev Share</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Ownership</strong></td>
+                            <td><span class="check">100% Yours</span></td>
+                            <td>They own your customer data</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AppSumo Batch Gen</strong></td>
+                            <td><span class="check">Native (Tiers + CSV)</span></td>
+                            <td>Complex / Paid Add-on</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Platform Support</strong></td>
+                            <td><span class="check">Electron, Node, PHP</span></td>
+                            <td>WordPress Plugin Focus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Unlimited Products</strong></td>
+                            <td><span class="check">Yes</span></td>
+                            <td>Often Tiered Pricing</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section">
+        <div class="container">
+            <h2 class="text-center" style="margin-bottom: 40px;">Integration so simple, it's magic.</h2>
+            <div class="code-block">
+                <span class="keyword">const</span> license <span class="keyword">=</span> <span
+                    class="keyword">new</span> LicenseManager({<br>
+                &nbsp;&nbsp;productId: <span class="string">'shopsnap-pro'</span>,<br>
+                &nbsp;&nbsp;apiUrl: <span class="string">'https://your-site.com/wp-json/shopsnap/v1'</span><br>
+                });<br><br>
+                <span class="comment">// Activate</span><br>
+                <span class="keyword">await</span> license.activate(<span
+                    class="string">'SUMO-XXXX-XXXX'</span>);<br><br>
+                <span class="comment">// Verify on Startup</span><br>
+                <span class="keyword">const</span> status <span class="keyword">=</span> <span
+                    class="keyword">await</span> license.verify();<br>
+                <span class="keyword">if</span> (status.isValid) {<br>
+                &nbsp;&nbsp;launchApp();<br>
+                }
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Nexus License Manager. Built for Builders.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
